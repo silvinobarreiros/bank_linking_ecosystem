@@ -7,11 +7,11 @@ Improve bank linking at Stash
 
 # Current Projects and Services
 
-* External Accounts
-* Institution Search Service
-* Stash Platform
-* Stash Quovo v2 Client
-* Stash Quovo v3 Client
+- External Accounts
+- Institution Search Service
+- Stash Platform
+- Stash Quovo v2 Client
+- Stash Quovo v3 Client
 ---
 
 # System Architecture
@@ -23,11 +23,7 @@ Improve bank linking at Stash
 
 ### Purpose
 
-* Provides a vendor agnostic view of externally linked accounts.
-
-* Any account (checking, savings, credit card etc) linked to a Stash account
-
-* So far we support Quovo and Plaid
+Provides a vendor agnostic view of externally linked accounts. Any account (checking, savings, credit card etc) linked to a Stash account. Two sources so far, Plaid + Quovo
 ---
 
 ### Some External Accounts Features
@@ -53,7 +49,7 @@ Provide a cleaner search mechanism for customers when they link a bank account. 
 
 ### Features
 
-* Elastic search backed type and search (there's a more producty name for this)
+* Elastic search backed type and search
 * Provider to Stash unique id mapping (used by External Accounts)
 ---
 
