@@ -96,7 +96,7 @@ Provide a cleaner search mechanism for customers when they link a bank account. 
 
 - Client for Quovo v3
 - Uses new nomenclature
-- Uses [sttp](https://github.com/softwaremill/sttp)
+- Uses sttp
 - Separate repo in Github
 ___
 
