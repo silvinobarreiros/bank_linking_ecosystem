@@ -17,6 +17,7 @@ Improve bank linking at Stash
 # System Architecture
 
 ---?image=assets/eat_system_architecture.png&size=auto 90%
+---
 
 # External Accounts
 
@@ -37,6 +38,7 @@ External Accounts Service provides a vendor agnostic view of externally linked a
 ### Linking an account with no MFA
 
 ---?image=assets/good_sync_flow.png&size=auto 90%
+---
 
 # Institution Search
 
