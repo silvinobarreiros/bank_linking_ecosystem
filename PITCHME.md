@@ -102,11 +102,11 @@ ___
 
 # Libraries
 
-- [Akka Http](https://doc.akka.io/docs/akka-http/current/) + [Spray Json](https://doc.akka.io/docs/akka-http/current/common/json-support.html#json-support)
-- [sttp](https://github.com/softwaremill/sttp)
-- [cats](https://typelevel.org/cats/)
-- [circe](https://circe.github.io/circe/)
-- [doobie](https://tpolecat.github.io/doobie/)
+- Akka Http + Spray Json
+- sttp
+- cats
+- circe
+- doobie
 ---
 
 # Patterns
