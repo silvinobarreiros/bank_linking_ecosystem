@@ -23,7 +23,9 @@ Improve bank linking at Stash
 
 ### Purpose
 
-External Accounts Service provides a vendor agnostic view of externally linked accounts. WTF is an externally linked account? Good question, take a seat, this is going to be a short and very boring ride. An external account is any account (checking, savings, credit card etc) linked to a Stash account using a 3rd party provider. So far we support Quovo and Plaid. External Accounts owns a Stash centric view of resources created with these providers. Meaning we create a Stash id and manage the mapping between this Stash id and the original source of the resource.
+* External Accounts Service provides a vendor agnostic view of externally linked accounts. 
+* Any account (checking, savings, credit card etc) linked to a Stash account using a 3rd party provider. 
+* So far we support Quovo and Plaid
 ---
 
 ### Some External Accounts Features
@@ -98,3 +100,137 @@ Provide a cleaner search mechanism for customers when they link a bank account. 
 * Uses new nomenclature
 * Uses [sttp](https://github.com/softwaremill/sttp)
 * Separate repo in Github
+___
+
+# Libraries
+
+* [Akka Http](https://doc.akka.io/docs/akka-http/current/) + [Spray Json](https://doc.akka.io/docs/akka-http/current/common/json-support.html#json-support)
+* [sttp](https://github.com/softwaremill/sttp)
+* [cats](https://typelevel.org/cats/)
+* [circe](https://circe.github.io/circe/)
+* [doobie](https://tpolecat.github.io/doobie/)
+---
+
+# Patterns
+---
+
+### Cake Pattern
+
+```scala
+class UsersController(dependencies: Dependencies) extends Controller {
+  
+  private implicit val ec = dependencies.executionContext
+
+  def routes: Route = pathPrefix("users" / stashUserId) { userId =>
+    val stashUserId = UUID.fromString(userId)
+
+    path("transactions") {
+      get {
+        parameters(queryParams)(parseOptions(_,_,_,_,_) { queryParams =>
+
+          complete(getTransactions(stashUserId, queryParams.convert))
+        })
+      }
+    }~
+    path("stats") {
+      get {
+        complete(getUserPortfolioStats(stashUserId))
+      }
+    }
+  }
+
+  private def getTransactions(stashUserId: UUID, queryOptions: TransactionQueryOptions): Future[ToResponseMarshallable] = {
+    import stash.transactions.api.json.TransactionProtocol._
+
+    dependencies.transactionService.getForUser(
+      user = stashUserId,
+      queryOptions
+    ).map { transactions =>
+      ToResponseMarshallable(StatusCodes.OK -> transactions.toResponse)
+    }.recover {
+      case NonFatal(e) => ToResponseMarshallable(StatusCodes.BadRequest -> e.getMessage)
+    }
+  }
+
+
+  private def getUserPortfolioStats(stashUserId: UUID): Future[ToResponseMarshallable] = {
+    import stash.transactions.api.json.StatsProtocols._
+
+    dependencies.portfoliosService.stats(stashUserId).map { portfolioStats =>
+      val statsResponse = StatsResponse(Stats(portfolio = portfolioStats))
+
+      ToResponseMarshallable(StatusCodes.OK -> statsResponse)
+    }.recover {
+      case NonFatal(e) => ToResponseMarshallable(StatusCodes.BadRequest -> e.getMessage)
+    }
+  }
+}
+```
+---
+
+### Companion
+
+```scala
+object UsersController {
+  trait Dependencies {
+    def executionContext: ExecutionContext
+    def transactionService: TransactionsService
+    def portfoliosService: PortfoliosService
+  }
+}
+```
+---
+
+### Injecting
+
+```scala
+class Environment(configuration: Config, implicit val actorSystem: ActorSystem)
+  extends BaseEnvironment
+    with UsersController.Dependencies
+    with PortfoliosController.Dependencies
+    with QuovoPlaidTransactionService.Dependencies
+    with QuovoPlaidPortfolioService.Dependencies
+    with MongoRepository.Dependencies { env =>
+
+    val currentVersion = Environment.versionedController("api")("v1") _
+
+    lazy implicit val executionContext: ExecutionContext = actorSystem.dispatcher
+    lazy val mongoExecutionContext = executionContext
+
+    // mongo dependencies
+    val mongoUri = configuration.getString("mongodb.uri")
+
+    lazy val driver = MongoDriver()
+    lazy val parsedUri = MongoConnection.parseURI(mongoUri)
+    lazy val connectionTry = parsedUri.map(driver.connection)
+    lazy val connection = Environment.getMongoDatabase(connectionTry, parsedUri)
+
+    lazy val instrumentationFactory = new CensorinusFactory(new CensorinusFactory.Dependencies {
+      val statsdConf = configuration.getConfig("statsd")
+      val hostname = statsdConf.getString("hostname")
+      val namespace = statsdConf.getString("namespace")
+      val port = statsdConf.getInt("port")
+
+      val statsdClient: StatsDClient = new StatsDClient(hostname, port, namespace)
+    })
+
+    // services
+    lazy val transactionService = new QuovoPlaidTransactionService(env)
+    lazy val portfoliosService = new QuovoPlaidPortfolioService(env)
+
+    lazy val usersController = new UsersController(env)
+    lazy val portfoliosController = new PortfoliosController(env)
+
+    val controllers = Seq(usersController, portfoliosController).map(currentVersion)
+
+    // repositories
+    lazy val plaidAccountsRepository = new AccountRepoImpl(env)
+    lazy val plaidUserRepository = new UserRepoImpl(env)
+    lazy val plaidTransactionRepository = new MongoPlaidTransactionsRepository(env)
+
+    lazy val quovoUsersRepository = new MongoQuovoUserRepository(env)
+    lazy val quovoTransactionsRepository = new MongoQuovoTransactionRepository(env)
+
+    lazy val quovoPortfoliosRepository = new MongoQuovoPortfolioRepository(env)
+}
+```
