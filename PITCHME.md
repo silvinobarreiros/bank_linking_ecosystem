@@ -23,8 +23,10 @@ Improve bank linking at Stash
 
 ### Purpose
 
-* External Accounts Service provides a vendor agnostic view of externally linked accounts. 
-* Any account (checking, savings, credit card etc) linked to a Stash account using a 3rd party provider. 
+* Provides a vendor agnostic view of externally linked accounts.
+
+* Any account (checking, savings, credit card etc) linked to a Stash account
+
 * So far we support Quovo and Plaid
 ---
 
