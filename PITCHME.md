@@ -101,7 +101,6 @@ Provide a cleaner search mechanism for customers when they link a bank account. 
 ---
 
 # Libraries
----
 
 - [Akka Http](https://doc.akka.io/docs/akka-http/current/) + [Spray Json](https://doc.akka.io/docs/akka-http/current/common/json-support.html#json-support)
 - [sttp](https://github.com/softwaremill/sttp)
