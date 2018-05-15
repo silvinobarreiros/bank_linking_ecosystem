@@ -18,15 +18,6 @@ Improve bank linking at Stash
 
 ---?image=assets/eat_system_architecture.png&size=auto 90%
 
----
-
-# Flows
-
-### Linking an account with no MFA
-
-![good_sync](assets/good_sync_flow.png)
----
-
 # External Accounts
 
 ### Purpose
@@ -42,6 +33,10 @@ External Accounts Service provides a vendor agnostic view of externally linked a
 * balance check
 * user information
 ---
+
+### Linking an account with no MFA
+
+---?image=assets/good_sync_flow.png&size=auto 90%
 
 # Institution Search
 
