@@ -16,7 +16,8 @@ Improve bank linking at Stash
 
 # System Architecture
 
-![eat_architecture](assets/eat_system_architecture.png =200x200)
+---?image=assets/eat_system_architecture.png&size=auto 90%
+
 ---
 
 # Flows
