@@ -28,11 +28,11 @@ Provides a vendor agnostic view of externally linked accounts. Any account (chec
 
 ### Some External Accounts Features
 
-* account linking
-* account access health
-* account stats
-* balance check
-* user information
+- account linking
+- account access health
+- account stats
+- balance check
+- user information
 ---
 
 ### Linking an account with no MFA
@@ -49,64 +49,64 @@ Provide a cleaner search mechanism for customers when they link a bank account. 
 
 ### Features
 
-* Elastic search backed type and search
-* Provider to Stash unique id mapping (used by External Accounts)
+- Elastic search backed type and search
+- Provider to Stash unique id mapping (used by External Accounts)
 ---
 
 # Stash Platform
 
 ### Purpose
 
-* Common Stash library for shared service code and domain models.
-* Publishes to S3
-* Easy to share client code, like quovo
-* S3 == Artifactory, mimics Maven/Ivy style repo
-* S3 is cheap and we already use it
+- Common Stash library for shared service code and domain models.
+- Publishes to S3
+- Easy to share client code, like quovo
+- S3 == Artifactory, mimics Maven/Ivy style repo
+- S3 is cheap and we already use it
 ---
 
 ### Shared Service Code
 
-* Thin base server and controller wrapper for Akka Http
-* Thin environment trait for cake pattern use
-* Health endpoint and response
+- Thin base server and controller wrapper for Akka Http
+- Thin environment trait for cake pattern use
+- Health endpoint and response
 ---
 
 ### Other Shared Code
 
-* Repository layer trait
-* Account, Portfolio, Transaction and User repositories
-* Mongo and Plaid Mongo repository concrete implementations
-* Common Json serializers and deserializers (DateTime, Enums)
+- Repository layer trait
+- Account, Portfolio, Transaction and User repositories
+- Mongo and Plaid Mongo repository concrete implementations
+- Common Json serializers and deserializers (DateTime, Enums)
 ---
 
 ### Domain Models
 
-* Account, Portfolio, Transaction and User
+- Account, Portfolio, Transaction and User
 ---
 
 # Stash Quovo v2 Client
 
-* Client for Quovo v2
-* Uses play libraries
-* Part of Stash Commons repo
-* Will be deprecated soon (internally only?)
+- Client for Quovo v2
+- Uses play libraries
+- Part of Stash Commons repo
+- Will be deprecated soon (internally only?)
 ---
 
 # Stash Quovo v3 Client
 
-* Client for Quovo v3
-* Uses new nomenclature
-* Uses [sttp](https://github.com/softwaremill/sttp)
-* Separate repo in Github
+- Client for Quovo v3
+- Uses new nomenclature
+- Uses [sttp](https://github.com/softwaremill/sttp)
+- Separate repo in Github
 ___
 
 # Libraries
 
-* [Akka Http](https://doc.akka.io/docs/akka-http/current/) + [Spray Json](https://doc.akka.io/docs/akka-http/current/common/json-support.html#json-support)
-* [sttp](https://github.com/softwaremill/sttp)
-* [cats](https://typelevel.org/cats/)
-* [circe](https://circe.github.io/circe/)
-* [doobie](https://tpolecat.github.io/doobie/)
+- [Akka Http](https://doc.akka.io/docs/akka-http/current/) + [Spray Json](https://doc.akka.io/docs/akka-http/current/common/json-support.html#json-support)
+- [sttp](https://github.com/softwaremill/sttp)
+- [cats](https://typelevel.org/cats/)
+- [circe](https://circe.github.io/circe/)
+- [doobie](https://tpolecat.github.io/doobie/)
 ---
 
 # Patterns
